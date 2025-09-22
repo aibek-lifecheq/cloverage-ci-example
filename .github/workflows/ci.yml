@@ -12,10 +12,6 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           check-latest: true
-      - name: Run tests
-        run: lein test
-      - name: Cloverage
-        run: CLOVERAGE_VERSION=1.1.1 lein cloverage --codecov
       - name: Install clojure tools
         uses: DeLaGuardo/setup-clojure@13.4
         with:
@@ -40,3 +36,7 @@ jobs:
           # key: cljdeps-${{ hashFiles('project.clj') }}
           # key: cljdeps-${{ hashFiles('build.boot') }}
           restore-keys: cljdeps-
+      - name: Run tests
+        run: lein test
+      - name: Cloverage
+        run: CLOVERAGE_VERSION=1.1.1 lein cloverage --codecov
