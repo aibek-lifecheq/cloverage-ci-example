@@ -16,9 +16,27 @@ jobs:
         run: lein test
       - name: Cloverage
         run: CLOVERAGE_VERSION=1.1.1 lein cloverage --codecov
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v5
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@13.4
         with:
-          file: target/coverage/codecov.json
+          # Install just one or all simultaneously
+          # The value must indicate a particular version of the tool, or use 'latest'
+          # to always provision the latest version
+          cli: 1.10.1.693              # Clojure CLI based on tools.deps
+          lein: 2.9.1                  # Leiningen
+
+      # Optional step:
+      - name: Cache clojure dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+            ~/.deps.clj
+            .cpcache
+          # List all files containing dependencies:
+          key: cljdeps-${{ hashFiles('deps.edn') }}
+          # key: cljdeps-${{ hashFiles('deps.edn', 'bb.edn') }}
+          # key: cljdeps-${{ hashFiles('project.clj') }}
+          # key: cljdeps-${{ hashFiles('build.boot') }}
+          restore-keys: cljdeps-
