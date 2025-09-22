@@ -40,11 +40,10 @@ jobs:
         run: lein test
       - name: Cloverage
         run: CLOVERAGE_VERSION=1.1.1 lein cloverage --codecov
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: coverage-report
-          path: target/coverage
+          path: target/coverage   # 👈 folder containing index.html
 
   deploy:
     needs: run
